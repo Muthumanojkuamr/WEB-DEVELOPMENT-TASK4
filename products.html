@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardware Components</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 20px; }
+        .controls { margin-bottom: 20px; display: flex; gap: 10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .card { background: white; padding: 15px; border-radius: 8px; text-align: center; }
+    </style>
+</head>
+<body>
+    <a href="index.html">← Back to Portfolio</a>
+    <h2>Component Inventory Filter & Sort</h2>
+    
+    <div class="controls">
+        <select id="categoryFilter" onchange="updateView()">
+            <option value="all">All Categories</option>
+            <option value="microcontroller">Microcontrollers</option>
+            <option value="sensor">Sensors</option>
+        </select>
+        
+        <select id="priceSort" onchange="updateView()">
+            <option value="asc">Price: Low to High</option>
+            <option value="desc">Price: High to Low</option>
+        </select>
+    </div>
+
+    <div class="grid" id="productGrid"></div>
+
+    <script>
+        const products = [
+            { name: "8051 Microcontroller", category: "microcontroller", price: 5.50 },
+            { name: "EV Temp Sensor", category: "sensor", price: 12.00 },
+            { name: "16x2 LCD Display", category: "sensor", price: 4.20 },
+            { name: "ARM Cortex-M", category: "microcontroller", price: 15.00 }
+        ];
+
+        function updateView() {
+            const filter = document.getElementById('categoryFilter').value;
+            const sort = document.getElementById('priceSort').value;
+            
+            let filtered = products.filter(p => filter === 'all' || p.category === filter);
+            
+            filtered.sort((a, b) => sort === 'asc' ? a.price - b.price : b.price - a.price);
+            
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = "";
+            filtered.forEach(p => {
+                grid.innerHTML += `<div class="card"><h3>${p.name}</h3><p>$${p.price.toFixed(2)}</p></div>`;
+            });
+        }
+
+        window.onload = updateView;
+    </script>
+</body>
+</html>
